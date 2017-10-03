@@ -230,7 +230,15 @@ class UserAvatar extends React.Component {
 
 ### State y props
 
-React maneja 2 conceptos para renderizar componentes. _State_ es el estado del componente, el cual puede cambiar varias veces en el tiempo; y los _props_, que son atributos de un componente, permiten personalizar los componentes que se utilizan en React, y son definidos una sola vez, al crear una instancia de dicho componente.
+React maneja 2 conceptos para mostrar información dentro de los componentes. _State_ es el estado del componente, el cual puede cambiar varias veces en el tiempo; y los _props_, que son atributos de un componente, permiten personalizar los componentes que se utilizan en React, y son definidos una sola vez, al crear una instancia de dicho componente.
+
+Una diferencia importante es que los componentes de React tienen un método específico para cambiar el estado, llamado `setState()`. `setState(newState)` reemplaza el estado actual (guardado en `this.state`) por `newState`. Cada vez que el estado es cambiado, se realiza un proceso llamado **_re-rendering_**.
+
+> _Rendering_ es el proceso de actualizar un componente de React en el navegador. Esto significa cambiar la apariencia o el contenido de un componente en el DOM. React se encarga de manejar el _rendering_ de manera inteligente haciendo una comparación entre el estado anterior y el nuevo estado (también hace la misma comparación a nivel de _props_, pero es recomendable usar el estado si se requiere actualizar un componente en el navegador).
+>
+> React solo actualiza la parte del componente que es afectado por el nuevo estado, y deja intacto el resto de elementos del DOM que forman parte del componente pero no están en contacto con el nuevo estado.
+>
+> Por otro lado, _re-rendering_ solo es el proceso de hacer un nuevo renderizado en el mismo componente.
 
 Otra diferencia importante es que los _props_ se definen externamente, en la instancia del componente, mientras que el _state_ es definido internamente, en la definición del componente:
 
@@ -273,10 +281,46 @@ Un componente de React tiene un ciclo de vida dentro de la aplicación, desde qu
 8. `componentDidUpdate()`
 9. `componentWillUnmount()`
 
+#### `constructor(props)`
+
+El constructor es un método propio de las clases de ECMAScript 6, y contiene código que es ejecutado al momento de crear una instancia de dicha clase. Dentro del constructor podemos definir el estado inicial de una instancia de un componente React, así como definir propiedades de instancia (no confundir con los _props_ de una instancia de un componente React) o métodos. El constructor recibe como parámetros a los `props` definidos al momento de instanciar el componente React.
+
+#### `componentWillMount()`
+
+Este método se ejecuta inmediatamente antes de insertar un componente en el DOM y se ejecuta antes del primer `render()`. Aquí también puede definirse el estado de la instancia del componente sin preocuparse porque ocurra un _re-rendering_ (dado que el componente aún no está insertado en el DOM).
+
+#### `render()`
+
 Un componente de React debe tener definido al menos el método `render()`, el cual debe retornar un elemento de React (escrito en JSX, puede ser un elemento del DOM o la instancia de un componente creado en React), `null`, o un booleano.
 
 > Si `render()` devuelve un booleano o `null`, no renderizará en el DOM.
 
 > `render()` debe ser una función pura. Es decir, una función que, pasándole el mismo input, devuelve el mismo output siempre. Tampoco debe modificar el DOM.
+
+#### `componentDidMount()`
+
+`componentDidMount()` es una función que se ejecuta inmediatamente después de haber insertado el componente en el DOM y de haber ejecutado `render()` por primera vez. Dentro de este método puede modificarse el elemento del DOM insertado por el componente (por ejemplo, para aplicar alguna biblioteca JavaScript que muta al DOM) o hacer peticiones asíncronas (como peticiones AJAX o lanzar `setInterval` o `setTimeout`).
+
+#### `componentWillReceiveProps(nextProps)`
+
+`componentWillReceiveProps()` es llamado antes de que un componente ya insertado en el DOM reciba nuevos _props_. Los nuevos _props_ que el componente va a recibir están guardados en el parámetro `nextProps` y pueden usarse para compararse con los _props_ actuales (guardados en `this.props`) para lanzar una actualización del estado utilizando `this.setState()`.
+
+#### `shouldComponentUpdate(nextProps, nextState)`
+
+`shouldComponentUpdate()` es llamado antes del _rendering_ y puede retornar `true` o `false`, indicando si el componente va a re-renderizarse o no. Si esta función devuelve `false`, tanto `componentWillUpdate()` como `render()` y `componentDidUpdate()` no se ejecutarán.
+
+> Retornar `false` en este método no evita que los componentes hijos se _re-rendericen_ si el estado de esos componentes hijos cambia.
+
+#### `componentWillUpdate(nextProps, nextState)`
+
+Este método se ejecuta inmediatamente antes de realizar un _re-rendering_ cuando nuevos _props_ o un nuevo estado llega al componente. Este método no es llamado cuando se realiza el primer _rendering_ (en comparación a `componentWillMount()`, que si es llamado antes del primer _rendering_).
+
+#### `componentDidUpdate(prevProps, prevState)`
+
+Este método es llamado inmediatamente después de realizar un _re-rendering_. Los _props_ y el estado anteriores son pasados como parámetros y pueden usarse para realizar operaciones asíncronas comparando esos valores con los nuevos _props_ y el nuevo estado. Este método no es llamado cuando se realiza el primer _rendering_ (en comparación a `componentDidMount()`, que si es llamado antes del primer _rendering_).
+
+#### `componentWillUnmount()`
+
+`componentWillUnmount()` es ejecutado inmediatamente antes de que un componente es quitado del DOM y destruido en memoria. Dentro de este método pueden realizarse operaciones de limpiado y liberación de recursos (por ejemplo: regresar un nodo del DOM modificado a su valor original, cancelar peticiones asíncronas o eliminar llamadas a `setInterval` o `setTimeout`).
 
 ### Class Components y Functional Components
