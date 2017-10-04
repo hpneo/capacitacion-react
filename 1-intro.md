@@ -110,7 +110,7 @@ numbers.map(item => item * 2);
 // => [2, 4, 6, 8]
 ```
 
-Si el cuerpo de un _arrow function_ tiene más de una línea, se utilizan llaves (los paréntesis engloban los parámetros de un _arrow function_ son opcionales):
+Si el cuerpo de un _arrow function_ tiene más de una línea, se utilizan llaves (los paréntesis que engloban los parámetros de un _arrow function_ son opcionales):
 
 ```javascript
 const numbers = [1, 2, 3, 4];
@@ -324,3 +324,34 @@ Este método es llamado inmediatamente después de realizar un _re-rendering_. L
 `componentWillUnmount()` es ejecutado inmediatamente antes de que un componente es quitado del DOM y destruido en memoria. Dentro de este método pueden realizarse operaciones de limpiado y liberación de recursos (por ejemplo: regresar un nodo del DOM modificado a su valor original, cancelar peticiones asíncronas o eliminar llamadas a `setInterval` o `setTimeout`).
 
 ### Class Components y Functional Components
+
+React tiene dos formas de definir componentes. La primera es creando una clase que extienda de `React.Component`, que asume que se usarán tanto el estado como varios métodos del ciclo de vida del componente, mientras que la segunda es una forma más simple llamada `Functional Component` o `Stateless Component`.
+Un `Functional Component` es una función que retorna lo mismo que el método `render()` (un elemento de React que puede ser escrito en JSX) y, a diferencia de un `Class Component`, no utiliza el estado, solo _props_ (que son declarados como argumentos en la función).
+
+En este ejemplo tenemos dos componentes. El primero, `MyClassComponent`, es una clase que extiende de `React.Component` y tiene definido un `constructor()` y los métodos `componentDidMount()` y `render()`.
+
+El segundo componente, `MyFunctionalComponent`, es una función que retorna un elemento React escrito en JSX que renderiza un valor tomado de los _props_ declarados como parámetros en dicha función, que a su vez son pasados por `MyClassComponent()` a través de su método `render()`:
+
+```javascript
+class MyClassComponent extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      value: 0;
+    };
+  }
+  componentDidMount() {
+    setInterval(
+      () =>
+        this.setState({ value: this.state.value + 1 })
+    , 1000);
+  }
+  render() {
+    return <MyFunctionalComponent value={this.state.value} />;
+  }
+}
+
+const MyFunctionalComponent = (props) =>
+  <div>{props.value}</div>;
+```
