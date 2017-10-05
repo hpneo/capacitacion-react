@@ -2,12 +2,18 @@
 
 ## Agenda
 
-1. ECMAScript 6 e introducción a React
+1. [ECMAScript 6 e introducción a React](1-intro.md)
   * ECMAScript 6
+    * Imports
+    * Exports
+    * `const` y `let`
+    * Clases
+    * Arrow functions
+    * Spread operator
   * React
     * JSX
-    * Component Lifecycle
     * State y props
+    * Component Lifecycle
     * Class Components y Functional Components
 2. Tips de desarrollo React y errores comunes
   * Arquitectura de una aplicación React

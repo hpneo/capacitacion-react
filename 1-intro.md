@@ -326,11 +326,8 @@ Este método es llamado inmediatamente después de realizar un _re-rendering_. L
 ### Class Components y Functional Components
 
 React tiene dos formas de definir componentes. La primera es creando una clase que extienda de `React.Component`, que asume que se usarán tanto el estado como varios métodos del ciclo de vida del componente, mientras que la segunda es una forma más simple llamada `Functional Component` o `Stateless Component`.
+
 Un `Functional Component` es una función que retorna lo mismo que el método `render()` (un elemento de React que puede ser escrito en JSX) y, a diferencia de un `Class Component`, no utiliza el estado, solo _props_ (que son declarados como argumentos en la función).
-
-En este ejemplo tenemos dos componentes. El primero, `MyClassComponent`, es una clase que extiende de `React.Component` y tiene definido un `constructor()` y los métodos `componentDidMount()` y `render()`.
-
-El segundo componente, `MyFunctionalComponent`, es una función que retorna un elemento React escrito en JSX que renderiza un valor tomado de los _props_ declarados como parámetros en dicha función, que a su vez son pasados por `MyClassComponent()` a través de su método `render()`:
 
 ```javascript
 class MyClassComponent extends React.Component {
@@ -355,3 +352,7 @@ class MyClassComponent extends React.Component {
 const MyFunctionalComponent = (props) =>
   <div>{props.value}</div>;
 ```
+
+En este ejemplo tenemos dos componentes. El primero, `MyClassComponent`, es una clase que extiende de `React.Component` y tiene definido un `constructor()`, así como los métodos `componentDidMount()` y `render()`.
+
+El segundo componente, `MyFunctionalComponent`, es una función que retorna un elemento React escrito en JSX que renderiza un valor tomado de los _props_ declarados como parámetros en dicha función, que a su vez son pasados por `MyClassComponent()` a través de su método `render()`.
