@@ -1,5 +1,71 @@
 # ECMAScript 6 e introducción a React
 
+## ECMAScript 5.1
+
+Si bien ECMAScript 6 trajo muchas novedades al lenguaje, previamente hubo cambios importantes en la versión anterior a esa. ECMAScript 5.1 incluye varios métodos dentro de los arrays que son muy útiles en el desarrollo con React.
+
+### Arrays
+
+#### map
+
+`map` es un método que itera sobre un array y devuelve un nuevo array donde cada elemento es una versión modificada de su contraparte en el array original.
+
+```javascript
+[1, 2, 3, 4].map(function(number) {
+  return number * 2;
+});
+
+// => [2, 4, 6, 8]
+```
+
+#### filter
+
+`filter` es un método que itera sobre un array y devuelve un nuevo array que contiene solo los elementos del array original que cumplen una condición definida en el _callback_ de este método.
+
+```javascript
+[1, 2, 3, 4].filter(function(number) {
+  return number % 2;
+});
+
+// => [1, 3]
+```
+
+#### find
+
+`find` es un método que itera sobre un array y devuelve el primer elemento del array original que cumple una condición definida en el _callback_ de este método.
+
+```javascript
+[1, 2, 3, 4].find(function(number) {
+  return number % 2;
+});
+
+// => [1, 3]
+```
+
+#### reduce
+
+`reduce` es un método que **reduce** un array a un valor (llamado acumulador) a través de una función que itera sobre el array y toma como parámetros el acumulador y el elemento actual de la iteración, y devuelve el nuevo valor del acumulador.
+
+```javascript
+[1, 2, 3, 4].reduce(function(accumulator, number) {
+  return accumulator + number;
+}, 0);
+
+// => 10
+```
+
+### Object
+
+#### Object.values
+
+`Object.values` es similar a `Object.keys`, con la diferencia que, en vez de retornar un array con las llaves del objeto, devuelve un array con los valores de dicho objeto.
+
+ ```javascript
+ Object.values({ name: 'John', lastName: 'Doe' });
+
+ // => ["John", "Doe"]
+ ```
+
 ## ECMAScript 6
 
 ECMAScript 6 es el nuevo estándar de JavaScript e incluye nuevas características del lenguaje que ayudan a escribir código más conciso y elegante.

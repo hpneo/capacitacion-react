@@ -3,6 +3,14 @@
 ## Agenda
 
 1. [ECMAScript 6 e introducción a React](1-intro.md)
+  * ECMAScript 5.1
+    * Arrays
+      * map
+      * filter
+      * find
+      * reduce
+    * Objects
+      * Object.values
   * ECMAScript 6
     * Imports
     * Exports
