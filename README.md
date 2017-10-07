@@ -51,3 +51,4 @@
 
 * [React - A JavaScript library for building user interfaces](https://facebook.github.io/react/)
 * [JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [Slides](https://drive.google.com/drive/folders/0B1GSvAe2ggaMUlNiTlVET1Z6Vjg?usp=sharing)
