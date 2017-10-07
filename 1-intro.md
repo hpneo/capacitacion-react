@@ -60,15 +60,56 @@ Si bien ECMAScript 6 trajo muchas novedades al lenguaje, previamente hubo cambio
 
 `Object.values` es similar a `Object.keys`, con la diferencia que, en vez de retornar un array con las llaves del objeto, devuelve un array con los valores de dicho objeto.
 
- ```javascript
- Object.values({ name: 'John', lastName: 'Doe' });
+```javascript
+Object.values({ name: 'John', lastName: 'Doe' });
 
- // => ["John", "Doe"]
- ```
+// => ["John", "Doe"]
+```
 
 ## ECMAScript 6
 
 ECMAScript 6 es el nuevo estándar de JavaScript e incluye nuevas características del lenguaje que ayudan a escribir código más conciso y elegante.
+
+### `const` y `let`
+
+Parte de la nueva especificación de ECMAScript 6 define dos nuevos tipos de variable. Las variables constantes, las cuales se crean con la palabra reservada `const`, y las variables de ámbito de bloque, que se crean con `let`.
+
+`const` permite crear variables que no pueden ser reasignadas:
+
+```javascript
+const currentUserName = 'Juan Perez';
+currentUserName = 'John Doe';
+
+// => Uncaught TypeError: Assignment to constant variable.
+```
+
+Por otro lado, `let` permite crear variables que solo existen en el ámbito de un bloque o expresión. Mientras que `var` crea variables que son accesibles a nivel global, o dentro del ámbito de una función, `let` crea variables que solo existen dentro de expresiones como `if` o `for`.
+
+```javascript
+for (let counter = 0; counter < 10; counter++) {
+  console.log(counter);
+}
+
+console.log(counter);
+// => Uncaught ReferenceError: counter is not defined
+```
+
+Las variables creadas con `let` no son accesibles en el ámbito global, y tampoco pueden redeclararse, pero sí reasignar su valor:
+
+```javascript
+let currentUserName = 'Juan Perez';
+currentUserName = 'John Doe';
+
+console.log(currentUserName);
+// => John Doe
+```
+
+```javascript
+let currentUserName = 'Juan Perez';
+let currentUserName = 'John Doe';
+
+// => Uncaught SyntaxError: Identifier 'currentUserName' has already been declared
+```
 
 ### Imports
 
@@ -94,41 +135,11 @@ const routes = {
   about: '/about',
 };
 
-export const compileRoute = (path, params) =>
-  compile(path)(params);
+export const compileRoute = function(path, params) {
+  return compile(path)(params);
+};
 
 export default routes;
-```
-
-### `const` y `let`
-
-Parte de la nueva especificación de ECMAScript 6 define dos nuevos tipos de variable. Las variables constantes, las cuales se crean con la palabra reservada `const`, y las variables de ámbito de bloque, que se crean con `let`.
-
-`const` permite crear variables que no pueden ser reasignadas:
-
-```javascript
-const currentUserName = 'Juan Perez';
-currentUserName = 'John Doe';
-
-// => Uncaught TypeError: Assignment to constant variable.
-```
-
-Por otro lado, `let` permite crear variables que solo existen en el ámbito de un bloque o expresión. Mientras que `var` crea variables que son accesibles a nivel global, o dentro del ámbito de una función, `let` crea variables que solo existen dentro de expresiones como `if` o `for`. Las variables creadas con `let` no son accesibles en el ámbito global, y tampoco pueden redeclararse, pero sí reasignar su valor:
-
-```javascript
-let currentUserName = 'Juan Perez';
-currentUserName = 'John Doe';
-
-console.log(currentUserName);
-
-// => John Doe
-```
-
-```javascript
-let currentUserName = 'Juan Perez';
-let currentUserName = 'John Doe';
-
-// => Uncaught SyntaxError: Identifier 'currentUserName' has already been declared
 ```
 
 ### Clases
@@ -233,6 +244,7 @@ const sum = (a, b) => a + b;
 const numbers = [1, 2];
 
 sum(...numbers);
+// => 3
 ```
 
 También se usa para crear nuevos arrays:
@@ -262,7 +274,6 @@ const currentUser = {
   ...basicInformation,
   ...extraInformation,
 };
-
 // => {
 //  firstName: 'John',
 //  lastName: 'Doe',

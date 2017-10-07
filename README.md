@@ -12,9 +12,9 @@
     * Objects
       * Object.values
   * ECMAScript 6
+    * `const` y `let`
     * Imports
     * Exports
-    * `const` y `let`
     * Clases
     * Arrow functions
     * Spread operator
@@ -23,7 +23,7 @@
     * State y props
     * Component Lifecycle
     * Class Components y Functional Components
-2. Tips de desarrollo React y errores comunes
+2. [Tips de desarrollo React y errores comunes](2-react-tips.md)
   * Arquitectura de una aplicación React
   * Organización de componentes
   * Peticiones asíncronas
