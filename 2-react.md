@@ -8,6 +8,13 @@ En este ejemplo se declara un evento `click` utilizando el _prop_ `onClick`:
 
 ```javascript
 class Toggle extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      isVisible: false
+    };
+  }
   render() {
     const isVisible = this.state.isVisible;
 
@@ -40,6 +47,7 @@ class Form extends React.Component {
     return (
       <form onSubmit={this.onFormSubmit}>
         ...componentes
+        <button type='submit'>Enviar formulario</button>
       </form>
     );
   }
@@ -51,19 +59,29 @@ class Form extends React.Component {
 Para manejar campos de formulario, como `<input>`, `<textarea>` o `<select>` se utiliza el prop `onChange`, el cual ejecuta una función cada vez que un input cambie su valor.
 
 ```javascript
-class Input extends React.Component {
+class Form extends React.Component {
   onInputChange(event) {
-    console.log(event.target.value);
+    console.log('input', event.target.value);
+  }
+  onSelectChange(event) {
+    console.log('select', event.target.value);
   }
   render() {
     return (
-      <input type={this.props.type} onChange={this.onInputChange} />
+      <form>
+        <input type={this.props.type} onChange={this.onInputChange} />
+        <select value={this.props.selectValue}  onChange={this.onSelectChange}>
+          <option value='angular'>Angular</option>
+          <option value='jquery'>jQuery</option>
+          <option value='react'>React</option>
+        </select>
+      </form>
     );
   }
 }
 ```
 
-### Controlled Components
+### Controlled / Uncontrolled Components
 
 React permite manejar los campos de formulario de dos formas. Una es utilizando _uncontrolled components_ y la otra es utilizando _controlled components_. Un _uncontrolled component_ es un componente que no es, valga la redundancia, controlado por React. Esto significa que React no se encarga de guardar su valor (y tampoco puede leerlo). Un _controlled component_ leer y guarda el valor de un componente en el _state_ a través de los eventos del componente.
 
@@ -78,7 +96,7 @@ class UncontrolledInput extends React.Component {
   }
   render() {
     return (
-      <form onSubmit={this.onFormSubmit}>
+      <form onSubmit={this.onFormSubmit.bind(this)}>
         <input type={this.props.type} ref={(input) => (this.input = input)} />
       </form>
     );
@@ -98,6 +116,9 @@ class ControlledInput extends React.Component {
     this.state = {
       input: ''
     };
+
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
   }
   onFormSubmit(event) {
     event.preventDefault();
