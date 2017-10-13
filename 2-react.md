@@ -42,6 +42,7 @@ Esto significa que este parámetro también tiene acceso a los métodos `stopPro
 class Form extends React.Component {
   onFormSubmit(event) {
     event.preventDefault();
+    console.log(event.type);
   }
   render() {
     return (
@@ -83,7 +84,7 @@ class Form extends React.Component {
 
 ### Controlled / Uncontrolled Components
 
-React permite manejar los campos de formulario de dos formas. Una es utilizando _uncontrolled components_ y la otra es utilizando _controlled components_. Un _uncontrolled component_ es un componente que no es, valga la redundancia, controlado por React. Esto significa que React no se encarga de guardar su valor (y tampoco puede leerlo). Un _controlled component_ leer y guarda el valor de un componente en el _state_ a través de los eventos del componente.
+React permite manejar los campos de formulario de dos formas. Una es utilizando _uncontrolled components_ y la otra es utilizando _controlled components_. Un _uncontrolled component_ es un componente que no es, valga la redundancia, controlado por React. Esto significa que React no se encarga de guardar su valor (y tampoco puede leerlo). Un _controlled component_ lee y guarda el valor de un componente en el _state_ a través de los eventos del componente.
 
 Para obtener el valor de un input que es _uncontrolled_ necesitas leer el valor directamente desde el DOM. Para esto se utiliza el _prop_ especial `ref`:
 
