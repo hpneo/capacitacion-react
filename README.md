@@ -23,7 +23,10 @@
     * State y props
     * Component Lifecycle
     * Class Components y Functional Components
-2. [Tips de desarrollo React y errores comunes](2-react-tips.md)
+2. [Desarrollo con React](2-react.md)
+  * Manejo de Eventos
+  * Formularios
+    * Controlled Components
   * Arquitectura de una aplicación React
   * Organización de componentes
   * Peticiones asíncronas
