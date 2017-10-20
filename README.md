@@ -28,7 +28,6 @@
   * Formularios
     * Controlled Components
   * Arquitectura de una aplicación React
-  * Organización de componentes
   * Peticiones asíncronas
 3. Redux
   * Redux Lifecycle

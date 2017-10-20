@@ -1,4 +1,4 @@
-# React Tips
+# Desarrollo con React
 
 ## Manejo de Eventos
 
@@ -180,3 +180,71 @@ Donde:
 * `sections` agrupa las secciones de una aplicación. Dichas secciones pueden ser partes de una misma pantalla o una sola pantalla de toda la aplicación. Una _sección_ puede estar compuesta por varios _componentes_. Generalmente las secciones son componentes de lógica.
 * `components` agrupan componentes (tanto de presentación como de lógica) que son específicos para esa _sección_.
 * `shared` contiene todos los componentes que son de uso general y pueden ser usados en más de una _sección_.
+
+## Peticiones asíncronas
+
+Para utilizar peticiones asíncronas dentro de un componente de React se debe considerar los escenarios donde el componente cambiará de estado con respecto a la petición. Por ejemplo, se tiene que tener un estado para cuando la petición está enviándose, cuando ha devuelto información, y también para los errores que pueda tener la petición asíncrona.
+
+En este caso vemos un componente simple que toma un _prop_ llamado `url`, tiene un estado inicial con los estados del componente y realiza la petición asíncrona utilizando `fetch` dentro del método `componentDidMount` del ciclo de vida.
+
+Los estados que va a manejar el componente son:
+
+* `isLoading`: Define si la petición está en proceso. Si es `false`, indica que la petición no ha sido iniciada o ya terminó.
+* `error`: Define un mensaje de error, si la petición ha finalizado pero no de manera exitosa (por un tema de conectividad o porque el servidor de la aplicación devuelve un error).
+* `data`: Define la respuesta del servidor en caso la petición haya finalizado exitosamente.
+
+Inicialmente, el estado empieza con `isLoading` en `false`, ya que la petición no se envía hasta que el componente está renderizado en el navegador (`componentDidMount`).
+
+`fetch` es una API nueva del navegador que permite realizar peticiones asíncronas muy fácilmente, comparando con la forma anterior donde se utiliza `XMLHTTPRequest`. `fetch` devuelve un `Promise`, y en este caso utilizamos el `then` para manejar el estado exitoso de la petición (asumiendo que no hubo problemas de conexión), pero también para definir un caso de error que `fetch` no considera por defecto, que es para manejar los _status codes_ que devuelva el servidor (en este caso asumimos que todos los _status code_ a partir de 400 son errores de la aplicación).
+
+```javascript
+class RemoteDataComponent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      error: null,
+      data: null,
+    };
+  }
+  componentDidMount() {
+    this.setState({ isLoading: true });
+
+    fetch(this.props.url)
+      .then((response) => {
+        if (response.status >= 400) {
+          if (response.status >= 400) {
+            return response.json().then((errorResponse) => {
+              throw errorResponse;
+            });
+          }
+
+          return response.json();
+        }
+      })
+      .then((data) => {
+        this.setState({
+          isLoading: false,
+          data: data
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false,
+          error: error.message
+        });
+      });
+  }
+  render() {
+    if (this.state.isLoading) {
+      return <div>Cargando...</div>;
+    }
+    else if (this.state.error) {
+      return <div>{this.state.error}</div>;
+    }
+
+    return <div>{/*...this.state.data*/}</div>;
+  }
+}
+```
