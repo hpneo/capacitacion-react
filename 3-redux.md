@@ -98,3 +98,20 @@ const reducer = combineReducers({
 
 const store = createStore(reducer);
 ```
+
+> Usando `combineReducers` el _state_ de la aplicación se divide en pequeñas secciones, definidas en el parámetro que recibe dicha función. Los _reducers_ por defecto solo pueden acceder a esa sección del _state_.
+
+### Integración con DevTools
+
+Es recomendable utilizar un debugger de Redux, especialmente cuando se trabajan con _state_ complejos en aplicaciones grande.
+
+[Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) permite inspeccionar el _store_ de una aplicación, incluyendo las acciones que realiza y cómo cambia el _state_ luego de cada acción lanzada.
+
+Para integrar Redux DevTools dentro del _store_ se debe instalar la extensión para Chrome o Firefox y modificar el código de creación del store:
+
+```javascript
+import { createStore } from 'redux';
+
+const enhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+const store = createStore(reducer, enhancer);
+```
