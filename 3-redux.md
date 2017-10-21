@@ -101,7 +101,13 @@ const store = createStore(reducer);
 
 > Usando `combineReducers` el _state_ de la aplicación se divide en pequeñas secciones, definidas en el parámetro que recibe dicha función. Los _reducers_ por defecto solo pueden acceder a esa sección del _state_.
 
-### Integración con DevTools
+## Redux Lifecycle
+
+![Redux Lifecycle](img/redux-lifecycle.png)
+
+El ciclo de vida en Redux empieza cuando un _action creator_ crea una acción, que es disparada por el _dispatcher_ de Redux y es recibida por el _store_ a través de un _reducer_. Este _reducer_ toma el _action_ disparado y, a partir del _state_ anterior, crea un nuevo _state_, que es pasado al componente React.
+
+## Integración con DevTools
 
 Es recomendable utilizar un debugger de Redux, especialmente cuando se trabajan con _state_ complejos en aplicaciones grande.
 
@@ -115,3 +121,86 @@ import { createStore } from 'redux';
 const enhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 const store = createStore(reducer, enhancer);
 ```
+
+## Integración con React
+
+Para poder usar Redux con React necesitamos agregar la biblioteca `react-redux` a nuestra aplicación.
+
+Luego, es necesario encapsular toda la aplicación React en un componente especial de React Redux llamado `<Provider>`. Con `<Provider>`, todos los componentes hijos tienen acceso al _store_ creado previamente con `createStore`. De esta forma, si `App` es el componente raíz de nuestra aplicación, tenemos que usar `<Provider>` de esta forma:
+
+```javascript
+import React from 'react';
+import { render } from 'react-dom';
+import { createStore } from 'redux';
+import reducer from './reducer';
+
+const store = createStore(reducer);
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
+
+El siguiente paso es conectar los componentes de React que utilizarán el _store_ con Redux:
+
+```javascript
+const TodoList = ({ items, dispatch }) => (
+  <div>
+    <button onClick={dispatch(addTodo('Nuevo item'))}>
+      Agregar
+    </button>
+    {items.map(renderItem)}
+  </div>
+);
+
+const mapStateToProps = state => (
+  {
+    items: state.items,
+  }
+);
+
+export default connect(mapStateToProps)(TodoList);
+```
+
+React Redux tiene un método `connect` que se encarga de conectar el _store_ de Redux con el componente de React. Cuando un componente de React es conectado a Redux obtiene un _prop_ llamado `dispatch`, que es el encargado de lanzar las acciones al _store_.
+
+`connect` acepta una función que se encarga de mapear partes del _state_ global del _store_ de Redux a _props_ del componente de React.
+
+## Organización de módulos Redux
+
+Redux se compone de varias partes que deben organizarse para poder ser usadas, y reutilizadas, de manera efectiva.
+
+Una forma de organizar los módulos de Redux es utilizando [**Ducks**](https://github.com/erikras/ducks-modular-redux). Un _duck_ es un archivo que contiene todas las partes que utiliza Redux para poder manejar el state de una aplicación.
+
+```javascript
+// Actions
+const ADD_TODO = 'ADD_TODO';
+
+const initialState = {
+  todos: [],
+};
+
+// Reducer
+export default function reducer(state, action) {
+  if (typeof state === 'undefined') {
+    return initialState;
+  }
+
+  // manejar el state aquí
+
+  return state;
+}
+
+// Action Creators
+export function addTodo(text) {
+  return {
+    type: ADD_TODO,
+    text: text
+  };
+}
+```
+
+Un _duck_ debe definir los _actions_ en constantes, exportar por defecto el _reducer_ y exportar los _action creators_.

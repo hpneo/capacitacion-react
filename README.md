@@ -30,7 +30,13 @@
   * Arquitectura de una aplicación React
   * Peticiones asíncronas
 3. Redux
+  * Actions
+  * Action Creators
+  * Reducers
+  * Store
   * Redux Lifecycle
+  * Integración con DevTools
+  * Integración con React
 4. Enfoque en el desarrollo de componentes reutilizables
   * Smart vs Dumb Components
   * Conexión con Redux
