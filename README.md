@@ -29,7 +29,7 @@
     * Controlled Components
   * Arquitectura de una aplicación React
   * Peticiones asíncronas
-3. Redux
+3. [Redux](3-redux.md)
   * Actions
   * Action Creators
   * Reducers
@@ -41,6 +41,7 @@
   * Smart vs Dumb Components
   * Conexión con Redux
   * Redux-Forms
+  * Creación de componente: tabla + paginación
 5. Ejercicio práctico usando create-react-app
 6. Configuración de Webpack
   * Babel / Sass / CSS
