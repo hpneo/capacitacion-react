@@ -41,7 +41,7 @@
 4. [Enfoque en el desarrollo de componentes reutilizables](4-reusable-components.md)
     * Presentational vs Container Components
     * Conexión con Redux
-    * Redux-Forms
+    * Higher Order Components
     * Creación de componente: tabla + paginación
 5. Ejercicio práctico usando create-react-app
 6. Configuración de Webpack
@@ -55,7 +55,6 @@
 8. Creación y uso de componentes y plugins para React
     * Crear componentes de presentación
     * Paso de parámetros usando props
-    * Higher Order Components
 
 ## Referencias
 
