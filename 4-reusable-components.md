@@ -1,12 +1,12 @@
 # Enfoque en el desarrollo de componentes reutilizables
 
-Al trabajar con React se hace necesario pensar en el desarrollo de componentes reutilizables que puedan incluirse en más de una pantalla de la aplicación. Estos componentes no solo pueden ser usados para presentar datos, si no también para manejar lógica de la aplicación o de la interfaz de usuario.
+Al trabajar con React se hace necesario pensar en el desarrollo de componentes reutilizables que puedan incluirse en más de una pantalla de la aplicación. Estos componentes pueden ser usados tanto para presentar datos como para manejar lógica de la aplicación o de la interfaz de usuario.
 
 ## Presentational vs Container Components
 
 Un _Presentational Component_ es un componente que solo se utiliza para presentar información, y utiliza _props_ para ello. Es por esto que normalmente se definen como _Functional Components_ y no se conectan con Redux. Puede haber casos donde requieran tener un _state_ (y por lo tanto necesiten ser escritos como _Class Components_) pero este _state_ solo se encarga de manejar estados de la interfaz de usuario relacionados a dicho componente.
 
-Un _Container Component_ es un componente que no solo se encarga de presentar información al usuario, si no también manejar lógica de la aplicación e interacciones con el usuario. Para esto utiliza el _state_ y los props, y es común conectarlos a Redux cuando se requiere manejar un _state_ más complejo y global.
+Un _Container Component_ es un componente que no solo se encarga de presentar información al usuario, sino también manejar lógica de la aplicación e interacciones con el usuario. Para esto utiliza el _state_ y los props, y es común conectarlos a Redux cuando se requiere manejar un _state_ más complejo y global.
 
 > Ambos tipos de componentes pueden contener tanto _presentational_ como _container_ _components_.
 
