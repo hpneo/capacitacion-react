@@ -40,17 +40,16 @@
 4. Enfoque en el desarrollo de componentes reutilizables
   * Smart vs Dumb Components
   * Conexión con Redux
-  * Redux-Forms
   * Creación de componente: tabla + paginación
 5. Ejercicio práctico usando create-react-app
-6. Configuración de Webpack
-  * Babel / Sass / CSS
-7. Redux-form
+6. Redux-form
   * Creación de campos
   * Validaciones
   * Validaciones asíncronas
   * ArrayFields
   * Valores iniciales
+7. Configuración de Webpack
+  * Babel / Sass / CSS
 8. Creación y uso de componentes y plugins para React
   * Crear componentes de presentación
   * Paso de parámetros usando props
