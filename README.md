@@ -44,7 +44,7 @@
     * Higher Order Components
     * Creación de componente: tabla + paginación
 5. Ejercicio práctico usando create-react-app
-6. Redux-form
+6. [Redux Form](5-redux-form.md)
     * Creación de campos
     * Validaciones
     * Validaciones asíncronas
