@@ -48,7 +48,7 @@
     * Creación de campos
     * Validaciones
     * Validaciones asíncronas
-    * ArrayFields
+    * Field Arrays
     * Valores iniciales
 7. Configuración de Webpack
     * Babel / Sass / CSS

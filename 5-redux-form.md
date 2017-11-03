@@ -82,10 +82,12 @@ ContactForm = reduxForm({
 export default ContactForm;
 ```
 
-`<Field />` tiene un _prop_ llamado `component` que puede tomar los siguientes valores:
+`<Field />` debe recibir un _prop_ llamado `name` que lo identifique dentro de Redux Form. También tiene un _prop_ llamado `component` que puede tomar los siguientes valores:
 
 * Un componente de React: Puede ser un _Class Component_ o un _Functional Component_.
 * Una cadena: `'input'`, `'select'` o `'textarea'`.
+
+Todos los otros _props_ pasados a `<Field />` son pasados directamente al componente pasado en el _prop_ `component`, de ser el caso.
 
 > Cuando se utilizan _Functional Components_ es importante definirlos fuera del método `render` del componente donde se va a utilizar, porque se crearía de nuevo cada vez que el componente sea renderizado, al ser considerado un _prop_ nuevo en cada renderizado.
 
@@ -117,19 +119,30 @@ const validate = (values) => {
   return errors;
 };
 
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
 let ContactForm = props => {
   const { handleSubmit } = props;
 
   return (
     <form onSubmit={ handleSubmit }>
-      <div>
-        <label htmlFor="name">Nombre</label>
-        <Field name="name" component="input" type="text" />
-      </div>
-      <div>
-        <label htmlFor="email">E-mail</label>
-        <Field name="email" component="input" type="email" />
-      </div>
+      <Field name="name" component={renderField} label="Nombre" type="text" />
+      <Field name="email" component={renderField} label="E-mail" type="email" />
       <button type="submit">Enviar</button>
     </form>
   )
@@ -143,6 +156,157 @@ ContactForm = reduxForm({
 export default ContactForm;
 ```
 
+`validate`es una función que recibe un objeto con los valores ingresados en el formulario y retorna un objeto con mensajes de error. En ambos casos, los _keys_ de los objetos son los nombres de los campos (definidos con el _prop_ `name`).
+
+### Validaciones a nivel de campos
+
+Para validar campo por campo se utiliza el prop `validate`en cada `<Field />`, el cual es una función que recibe 3 parámetros:
+
+* `value`, que es el valor del campo.
+* `allValues`, que es un objeto con todos los valores ingresados al formulario.
+* `props`, que son propiedades pasados al formulario.
+
+Si el valor del campo es válido, la función debe retornar `undefined`. Si el valor del campo no pasa la validación debe retornar un error (normalmente, una cadena con el mensaje de error).
+
+```javascript
+import React from 'react';
+import { Field, reduxForm } from 'redux-form';
+
+const required = value =>
+  (value ? undefined : 'Campo requerido');
+const email = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+    ? 'E-mail inválido'
+    : undefined;
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
+let ContactForm = props => {
+  const { handleSubmit } = props;
+
+  return (
+    <form onSubmit={ handleSubmit }>
+      <Field
+        name="name"
+        component={renderField}
+        label="Nombre"
+        type="text"
+        validate={required}
+      />
+      <Field
+        name="email"
+        component={renderField}
+        label="E-mail"
+        type="email"
+        validate={[required, email]}
+      />
+      <button type="submit">Enviar</button>
+    </form>
+  )
+};
+
+ContactForm = reduxForm({
+  form: 'contact'
+})(ContactForm);
+
+export default ContactForm;
+```
+
 ## Validaciones asíncronas
-## ArrayFields
+
+Las validaciones asíncronas son necesarias cuando se necesita validar el formulario utilizando un servidor. Por ejemplo, si se quiere saber si un nombre de usuario ya ha sido tomado, o si un código existe en una base de datos.
+
+En Redux Form, las validaciones asíncronas se ejecutan si las otras validaciones ya pasaron satisfactoriamente, y se definen de manera similar a las validaciones a nivel de formulario. Esto es, como propiedades de configuración de `reduxForm`.
+
+Existen dos propiedades a configurar dentro de `reduxForm`. La primera es `asyncValidate`, una función que toma como parámetro y debe devolver un `Promise`, donde puede retornar un objeto en caso la validación no pase. La segunda propiedad es `asyncBlurFields` y es necesaria para saber qué campos del formulario van a activar la validación asíncrona.
+
+```javascript
+import React from 'react';
+import { Field, reduxForm } from 'redux-form';
+
+const sleep = ms =>
+  new Promise(resolve => setTimeout(resolve, ms));
+
+const required = value =>
+  (value ? undefined : 'Campo requerido');
+
+const email = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+    ? 'E-mail inválido'
+    : undefined;
+
+const asyncValidate = values =>
+  sleep(1000).then(() => {
+    // realizar validación en el servidor
+    if (['pepito@example.com', 'juanito@example.com'].includes(values.email)) {
+      throw { email: 'Este correo ya es usado por otro usuario' };
+    }
+  });
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
+let SignUpForm = props => {
+  const { handleSubmit } = props;
+
+  return (
+    <form onSubmit={ handleSubmit }>
+      <Field
+        name="email"
+        component={renderField}
+        label="E-mail"
+        type="email"
+        validate={[required, email]}
+      />
+      <Field
+        name="password"
+        component={renderField}
+        label="Contraseña"
+        type="password"
+        validate={required}
+      />
+      <button type="submit">Enviar</button>
+    </form>
+  )
+};
+
+SignUpForm = reduxForm({
+  form: 'contact',
+  asyncValidate,
+  asyncBlurFields: ['email']
+})(SignUpForm);
+
+export default SignUpForm;
+```
+
+## Field Arrays
 ## Valores iniciales
