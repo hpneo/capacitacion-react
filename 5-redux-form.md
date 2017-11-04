@@ -239,9 +239,6 @@ Existen dos propiedades a configurar dentro de `reduxForm`. La primera es `async
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-const sleep = ms =>
-  new Promise(resolve => setTimeout(resolve, ms));
-
 const required = value =>
   (value ? undefined : 'Campo requerido');
 
@@ -249,6 +246,9 @@ const email = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'E-mail inválido'
     : undefined;
+
+const sleep = ms =>
+  new Promise(resolve => setTimeout(resolve, ms));
 
 const asyncValidate = values =>
   sleep(1000).then(() => {

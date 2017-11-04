@@ -64,4 +64,5 @@
 * [React - A JavaScript library for building user interfaces](https://facebook.github.io/react/)
 * [JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 * [Higher-Order Components - React](https://reactjs.org/docs/higher-order-components.html)
+* [Redux Form](https://redux-form.com/7.1.2/docs/gettingstarted.md/)
 * [Slides](https://drive.google.com/drive/folders/0B1GSvAe2ggaMUlNiTlVET1Z6Vjg?usp=sharing)
