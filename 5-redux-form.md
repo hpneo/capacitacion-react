@@ -309,4 +309,147 @@ export default SignUpForm;
 ```
 
 ## Field Arrays
+
+Existen casos donde requieren tener grupos de controles para agregar dinámicamente más de un elemento del mismo tipo (por ejemplo, agregar un conjunto de notas a un alumno o el detalle de una orden a una orden). En estos casos es util el componente `<FieldArray />`.
+
+`<FieldArray />` acepta los mismos _props_ que `<Field />`: `name`, `component` y `validate`, entre otros. En el caso de `component`, `<FieldArray />` acepta componentes (ya sea _Class_ o _Funciontal_) y es utilizado para renderizar cada campo del grupo de campos.
+
+```javascript
+import React from 'react';
+import { Field, FieldArray, reduxForm } from 'redux-form';
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
+const renderStudents = ({ fields }) => (
+  <ul>
+    <li>
+      <button type="button" onClick={() => fields.push()}>
+        Agregar alumno
+      </button>
+    </li>
+    {
+      fields.map((student, index) => (
+        <li key={index}>
+          <button
+            type="button"
+            title="Quitar"
+            onClick={() => fields.remove(index)}
+          />
+          <h4>Alumno #{index + 1}</h4>
+          <Field
+            name={student}
+            type="text"
+            component={renderField}
+            label="Nombre"
+          />
+        </li>
+      ))
+    }
+  </ul>
+);
+
+let StudentsForm = props => {
+  const { handleSubmit } = props;
+
+  return (
+    <form onSubmit={ handleSubmit }>
+      <FieldArray name="students" component={renderStudents} />
+      <button type="submit">Enviar</button>
+    </form>
+  )
+};
+
+StudentsForm = reduxForm({
+  form: 'students'
+})(StudentsForm);
+
+export default StudentsForm;
+```
+
+Los componentes pasados como `component` reciben un _prop_ llamado `fields`, el cual es un objeto parecido a un _array_ que tiene varios métodos para agregar o eliminar campos de un grupo de campos de manera dinámica. Entre los métodos que tiene disponible están `insert`, `pop`, `push` y `remove`.
+
+### Validación
+
+La validación de un grupo de campos puede ser hecha a nivel de formulario a través de la propiedad de configuración `validate` de `reduxForm`. La función pasada a `validate` recibe todos los valores ingresados al formulario, incluyendo los grupos de campos.
+
+```javascript
+const validate = values => {
+  const errors = {};
+
+  if (!values.students || values.students.length === 0) {
+    errors.students = {
+      _error: 'Debe haber al menos un alumno registrado'
+    };
+  } else {
+    const studentsErrors = [];
+
+    values.students.forEach((student, studentIndex) => {
+      if (!student) {
+        studentsErrors[studentIndex] = 'Debe ingresar un nombre';
+      }
+    });
+
+    errors.students = studentsErrors;
+  }
+
+  return errors;
+};
+```
+
 ## Valores iniciales
+
+Redux Form soporta la creación de formularios con data inicial. Para esto es necesario conectar a Redux el componente devuelto por el _Higher Order Component_ `reduxForm`.
+
+```javascript
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
+
+let EditUser = props => {
+  const { handleSubmit } = props;
+
+  return (
+    <form onSubmit={ handleSubmit }>
+      <div>
+        <label htmlFor="firstName">Nombres</label>
+        <Field name="firstName" component="input" type="text" />
+      </div>
+      <div>
+        <label htmlFor="lastName">Apellidos</label>
+        <Field name="lastName" component="input" type="text" />
+      </div>
+      <button type="submit">Guardar</button>
+    </form>
+  )
+};
+
+const mapStateToProps = state => ({
+  initialValues: {
+    firstName: 'Juan',
+    lastName: 'Perez'
+  }
+});
+
+EditUser = reduxForm({
+  form: 'edit-user'
+})(EditUser);
+
+EditUser = connect(mapStateToProps)(EditUser);
+
+export default EditUser;
+```

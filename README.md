@@ -47,8 +47,11 @@
 6. [Redux Form](5-redux-form.md)
     * Creación de campos
     * Validaciones
+      * Validaciones a nivel de formulario
+      * Validaciones a nivel de campos
     * Validaciones asíncronas
     * Field Arrays
+      * Validación
     * Valores iniciales
 7. Configuración de Webpack
     * Babel / Sass / CSS
